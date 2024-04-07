@@ -7,6 +7,7 @@ defmodule FinRouterWeb.Router do
 
   scope "/api", FinRouterWeb do
     pipe_through :api
+    resources "/routes", RouteController, only: [:index]
   end
 
   # Enables LiveDashboard only for development

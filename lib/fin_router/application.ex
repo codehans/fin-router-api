@@ -15,9 +15,10 @@ defmodule FinRouter.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: FinRouter.PubSub},
       # Start the Endpoint (http/https)
-      FinRouterWeb.Endpoint
+      FinRouterWeb.Endpoint,
       # Start a worker by calling: FinRouter.Worker.start_link(arg)
       # {FinRouter.Worker, arg}
+      FinRouter.Node
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

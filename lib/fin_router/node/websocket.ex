@@ -16,14 +16,14 @@ defmodule FinRouter.Node.Websocket do
     {:ok, state}
   end
 
-  def handle_disconnect(_status, _state) do
+  def handle_disconnect(status, _state) do
     raise "#{__MODULE__} Disconnected"
   end
 
   def handle_frame({:text, msg}, state) do
     case Jason.decode(msg, keys: :atoms) do
       {:ok, %{result: %{data: %{type: t, value: v}}}} ->
-        Phoenix.PubSub.broadcast(Pond.PubSub, t, v)
+        Phoenix.PubSub.broadcast(FinRouter.PubSub, t, v)
 
         {:ok, state}
 

@@ -1,4 +1,6 @@
 defmodule FinRouter.Routes do
+  use Memoize
+
   @moduledoc """
   The Routes context.
   """
@@ -19,6 +21,25 @@ defmodule FinRouter.Routes do
 
   """
   def list_routes(%{denom: input_denom, amount: input_amount}, %{denom: output_denom}, opts \\ []) do
-    {:ok, [%Route{}]}
+    with {:ok, pairs} <- Kujira.Fin.list_pairs(FinRouter.Node.channel()),
+         {:ok, pairs} <- load_books(pairs) do
+      {:ok, [%Route{}]}
+    end
+  end
+
+  defmemop load_books(pairs), expires_in: 10 * 1000 do
+    pairs
+    |> Task.async_stream(&Kujira.Fin.load_pair(FinRouter.Node.channel(), &1))
+    |> Enum.reduce({:ok, []}, fn
+      _, :error ->
+        :error
+
+      {:ok, pair}, {:ok, agg} ->
+        {:ok, [pair | agg]}
+
+      # Don't throw if a single book can't be loaded
+      :error, {:ok, agg} ->
+        {:ok, agg}
+    end)
   end
 end

@@ -14,6 +14,13 @@ defmodule FinRouterWeb.FallbackController do
     |> render("error.json", changeset: changeset)
   end
 
+  def call(conn, {:error, %GRPC.RPCError{} = error}) do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> put_view(FinRouterWeb.GrpcView)
+    |> render("error.json", error: error)
+  end
+
   # This clause is an example of how to handle resources that cannot be found.
   def call(conn, {:error, :not_found}) do
     conn

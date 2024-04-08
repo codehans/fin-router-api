@@ -26,8 +26,8 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 config :fin_router, FinRouter.Node,
-  host: "127.0.0.1",
-  port: 9090,
+  host: "kujira-grpc.polkachu.com",
+  port: 11890,
   websocket: "wss://rpc-kujira.starsquid.io"
 
 # Import environment specific config. This must remain at the bottom

@@ -20,9 +20,13 @@ defmodule FinRouter.Routes do
       [%Route{}, ...]
 
   """
-  def list_routes(%{denom: input_denom, amount: input_amount}, %{denom: output_denom}, opts \\ []) do
+  def list_routes(
+        %{denom: _input_denom, amount: _input_amount},
+        %{denom: _output_denom},
+        _opts \\ []
+      ) do
     with {:ok, pairs} <- Kujira.Fin.list_pairs(FinRouter.Node.channel()),
-         {:ok, pairs} <- load_books(pairs) do
+         {:ok, _pairs} <- load_books(pairs) do
       {:ok, [%Route{}]}
     end
   end

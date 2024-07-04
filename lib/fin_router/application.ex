@@ -18,7 +18,8 @@ defmodule FinRouter.Application do
       FinRouterWeb.Endpoint,
       # Start a worker by calling: FinRouter.Worker.start_link(arg)
       # {FinRouter.Worker, arg}
-      FinRouter.Node
+      FinRouter.Node,
+      {Kujira.Invalidator, pubsub: FinRouter.PubSub}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

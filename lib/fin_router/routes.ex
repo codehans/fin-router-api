@@ -31,7 +31,7 @@ defmodule FinRouter.Routes do
     end
   end
 
-  defmemop load_books(pairs), expires_in: 10 * 1000 do
+  def load_books(pairs) do
     pairs
     |> Task.async_stream(&Kujira.Fin.load_pair(FinRouter.Node.channel(), &1))
     |> Enum.reduce({:ok, []}, fn
